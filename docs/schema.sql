@@ -1,6 +1,6 @@
 -- Users Table (Profiles)
 -- Supabase Authのusersテーブルと連動
-create table public.profiles (
+create table if not exists public.profiles (
   id uuid not null references auth.users(id) on delete cascade primary key,
   email text,
   username text unique,
@@ -15,20 +15,21 @@ create table public.profiles (
 -- RLS Policies for Profiles
 alter table public.profiles enable row level security;
 
-create policy "Public profiles are viewable by everyone."
-  on public.profiles for select
-  using ( true );
+-- Policies (Wrapped in do blocks to prevent "already exists" errors)
+do $$ begin
+  create policy "Public profiles are viewable by everyone." on public.profiles for select using ( true );
+exception when others then null; end $$;
 
-create policy "Users can insert their own profile."
-  on public.profiles for insert
-  with check ( auth.uid() = id );
+do $$ begin
+  create policy "Users can insert their own profile." on public.profiles for insert with check ( auth.uid() = id );
+exception when others then null; end $$;
 
-create policy "Users can update own profile."
-  on public.profiles for update
-  using ( auth.uid() = id );
+do $$ begin
+  create policy "Users can update own profile." on public.profiles for update using ( auth.uid() = id );
+exception when others then null; end $$;
 
 -- Courses Table
-create table public.courses (
+create table if not exists public.courses (
   id uuid default gen_random_uuid() primary key,
   title text not null,
   description text,
@@ -38,7 +39,7 @@ create table public.courses (
 );
 
 -- Units Table
-create table public.units (
+create table if not exists public.units (
   id uuid default gen_random_uuid() primary key,
   course_id uuid references public.courses(id) on delete cascade not null,
   title text not null,
@@ -48,7 +49,7 @@ create table public.units (
 );
 
 -- Lessons Table
-create table public.lessons (
+create table if not exists public.lessons (
   id uuid default gen_random_uuid() primary key,
   unit_id uuid references public.units(id) on delete cascade not null,
   title text not null,
@@ -60,7 +61,7 @@ create table public.lessons (
 );
 
 -- User Progress Table
-create table public.user_progress (
+create table if not exists public.user_progress (
   user_id uuid references public.profiles(id) on delete cascade not null,
   lesson_id uuid references public.lessons(id) on delete cascade not null,
   status text not null default 'locked', -- 'locked', 'active', 'completed'
@@ -71,17 +72,17 @@ create table public.user_progress (
 
 alter table public.user_progress enable row level security;
 
-create policy "Users can view own progress"
-  on public.user_progress for select
-  using ( auth.uid() = user_id );
+do $$ begin
+  create policy "Users can view own progress" on public.user_progress for select using ( auth.uid() = user_id );
+exception when others then null; end $$;
 
-create policy "Users can update own progress"
-  on public.user_progress for insert
-  with check ( auth.uid() = user_id );
+do $$ begin
+  create policy "Users can insert own progress" on public.user_progress for insert with check ( auth.uid() = user_id );
+exception when others then null; end $$;
 
-create policy "Users can update own progress"
-  on public.user_progress for update
-  using ( auth.uid() = user_id );
+do $$ begin
+  create policy "Users can update own progress" on public.user_progress for update using ( auth.uid() = user_id );
+exception when others then null; end $$;
 
 -- Handle new user creation trigger
 create or replace function public.handle_new_user()
@@ -93,6 +94,7 @@ begin
 end;
 $$ language plpgsql security definer;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
