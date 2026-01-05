@@ -65,9 +65,9 @@
 
 ## Phase 6: ゲーミフィケーションと仕上げ 🏆
 
-- [ ] **進捗保存処理**
-  - Server Actions で `user_progress` 更新
-  - XP, Streak, Hearts の更新ロジック
+- [x] **進捗保存処理**
+  - [x] Server Actions で `user_progress` 更新
+  - [x] XP, Streak, Hearts の更新ロジック
 - [ ] **PWA 化**
   - `@serwist/next` 導入
   - `app/manifest.ts` 作成

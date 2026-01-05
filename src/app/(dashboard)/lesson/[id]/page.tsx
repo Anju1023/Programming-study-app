@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { X, Heart, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 import { MobileFrame } from "@/components/layout/mobile-frame";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePyodide } from "@/hooks/use-pyodide";
+import { completeLesson } from "@/app/actions/progress";
 
 // クイズコンポーネントのインポート
 import { MultipleChoice } from "@/components/quiz/multiple-choice";
@@ -57,6 +58,7 @@ const mockQuizzes: QuizData[] = [
 
 export default function LessonPage() {
   const params = useParams();
+  const lessonId = Array.isArray(params.id) ? params.id[0] : params.id;
   const router = useRouter();
   const { isReady, runPython } = usePyodide();
 
@@ -64,6 +66,7 @@ export default function LessonPage() {
   const [hearts, setHearts] = useState(5);
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
   
   // 状態管理
   const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
@@ -77,6 +80,25 @@ export default function LessonPage() {
 
   const currentQuiz = mockQuizzes[currentStep];
   const progress = ((currentStep + 1) / mockQuizzes.length) * 100;
+
+  // 結果画面が表示されたら進捗を保存
+  useEffect(() => {
+    if (isFinished && lessonId) {
+      const saveProgress = async () => {
+        setIsSaving(true);
+        try {
+          // モックデータなのでlessonIdがDBにない場合のエラーは無視されるかも
+          // 本番ではparams.idを使用する
+          await completeLesson(lessonId, score, mockQuizzes.length, score * 10);
+        } catch (err) {
+          console.error("Failed to save progress", err);
+        } finally {
+          setIsSaving(false);
+        }
+      };
+      saveProgress();
+    }
+  }, [isFinished, lessonId, score]);
 
   const handleCheck = async () => {
     let correct = false;
