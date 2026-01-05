@@ -60,27 +60,41 @@ export default function LearnPage() {
                     className="relative transition-transform active:scale-95"
                     style={{ marginLeft: `${marginLeft}px` }}
                   >
-                    <Link href={lesson.status !== "locked" ? `/lesson/${lesson.id}` : "#"}>
-                      <button
-                        disabled={lesson.status === "locked"}
+                    {lesson.status !== "locked" ? (
+                      <Link href={`/lesson/${lesson.id}`}>
+                        <div
+                          className={`
+                            w-20 h-20 rounded-full border-b-8 flex items-center justify-center transition-all cursor-pointer
+                            ${lesson.status === "completed" 
+                              ? "bg-duo-green border-green-700 text-white" 
+                              : lesson.status === "active"
+                              ? "bg-duo-blue border-blue-600 text-white animate-bounce-slow"
+                              : "bg-slate-200 border-slate-300 text-slate-400"}
+                          `}
+                        >
+                          {lesson.status === "completed" ? (
+                            <CheckCircle2 size={32} />
+                          ) : lesson.type === "boss" ? (
+                            <Trophy size={32} className={lesson.status === "locked" ? "" : "text-amber-300"} />
+                          ) : (
+                            <Play size={32} fill="currentColor" />
+                          )}
+                        </div>
+                      </Link>
+                    ) : (
+                      <div
                         className={`
                           w-20 h-20 rounded-full border-b-8 flex items-center justify-center transition-all
-                          ${lesson.status === "completed" 
-                            ? "bg-duo-green border-green-700 text-white" 
-                            : lesson.status === "active"
-                            ? "bg-duo-blue border-blue-600 text-white animate-bounce-slow"
-                            : "bg-slate-200 border-slate-300 text-slate-400"}
+                          bg-slate-200 border-slate-300 text-slate-400
                         `}
                       >
-                        {lesson.status === "completed" ? (
-                          <CheckCircle2 size={32} />
-                        ) : lesson.type === "boss" ? (
-                          <Trophy size={32} className={lesson.status === "locked" ? "" : "text-amber-300"} />
+                        {lesson.type === "boss" ? (
+                          <Trophy size={32} />
                         ) : (
-                          <Play size={32} fill="currentColor" />
+                          <Lock size={32} />
                         )}
-                      </button>
-                    </Link>
+                      </div>
+                    )}
                     
                     {/* レッスン名（吹き出しっぽく） */}
                     {lesson.status === "active" && (
