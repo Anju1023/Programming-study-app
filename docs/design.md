@@ -12,19 +12,19 @@
 graph TD
     User[User (Mobile/Desktop)] -->|HTTPS| CDN[Vercel Edge Network]
     CDN -->|Next.js App Router| Server[Next.js Server (Vercel)]
-    
+
     subgraph Client [Browser / PWA]
         UI[React UI (Client Components)]
         PyWorker[Web Worker (Pyodide)]
         LocalDB[IndexedDB / Cache API]
     end
-    
+
     subgraph Backend [Supabase]
         Auth[Auth Service]
         DB[(PostgreSQL)]
         Storage[Storage]
     end
-    
+
     User -->|Interaction| UI
     UI -->|Async Message| PyWorker
     UI -->|Server Actions| Server
@@ -108,15 +108,15 @@ src/
 
 Supabase Auth の `users` テーブルと 1:1 で紐づく公開プロフィール情報。
 
-| Column | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `uuid` | PK, references `auth.users.id` |
-| `username` | `text` | unique, 表示名 |
-| `avatar_url` | `text` | |
-| `xp` | `int` | default 0 |
-| `streak` | `int` | default 0 |
-| `hearts` | `int` | default 5 |
-| `last_active_at` | `timestamptz` | |
+| Column           | Type          | Description                    |
+| :--------------- | :------------ | :----------------------------- |
+| `id`             | `uuid`        | PK, references `auth.users.id` |
+| `username`       | `text`        | unique, 表示名                 |
+| `avatar_url`     | `text`        |                                |
+| `xp`             | `int`         | default 0                      |
+| `streak`         | `int`         | default 0                      |
+| `hearts`         | `int`         | default 5                      |
+| `last_active_at` | `timestamptz` |                                |
 
 ### `courses`, `units`, `lessons`
 
@@ -130,13 +130,13 @@ Supabase Auth の `users` テーブルと 1:1 で紐づく公開プロフィー�
 
 ユーザーの学習進捗。
 
-| Column | Type | Description |
-| :--- | :--- | :--- |
-| `user_id` | `uuid` | PK, FK to profiles |
-| `lesson_id` | `uuid` | PK, FK to lessons |
-| `status` | `enum` | 'locked', 'active', 'completed' |
-| `score` | `int` | クイズのスコア |
-| `completed_at` | `timestamptz` | |
+| Column         | Type          | Description                     |
+| :------------- | :------------ | :------------------------------ |
+| `user_id`      | `uuid`        | PK, FK to profiles              |
+| `lesson_id`    | `uuid`        | PK, FK to lessons               |
+| `status`       | `enum`        | 'locked', 'active', 'completed' |
+| `score`        | `int`         | クイズのスコア                  |
+| `completed_at` | `timestamptz` |                                 |
 
 ## 5. UI/UX デザインシステム
 
