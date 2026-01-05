@@ -22,7 +22,17 @@ export const usePyodide = () => {
     workerRef.current = worker;
     apiRef.current = api;
     
-    setIsReady(true);
+    // Pyodideの初期化を開始
+    const initPyodide = async () => {
+      try {
+        await api.init();
+        setIsReady(true);
+      } catch (err) {
+        console.error("Failed to initialize Pyodide:", err);
+      }
+    };
+
+    initPyodide();
 
     return () => {
       worker.terminate();

@@ -4,9 +4,10 @@ import { MobileFrame } from "@/components/layout/mobile-frame";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { Card } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
-import { Star, Play, Lock, CheckCircle2 } from "lucide-react";
+import { Star, Play, Lock, CheckCircle2, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 // モックデータ: ユニットとレッスンの構造
 const units = [
@@ -44,10 +45,15 @@ export default function LearnPage() {
       <div className="p-4 space-y-8 pb-32">
         {units.map((unit) => (
           <section key={unit.id} className="space-y-6">
-            <div className="bg-duo-green text-white p-6 rounded-3xl shadow-lg border-b-8 border-green-700">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-duo-green text-white p-6 rounded-3xl shadow-lg border-b-8 border-green-700"
+            >
               <h2 className="text-2xl font-black">{unit.title}</h2>
               <p className="text-green-50 opacity-90 font-bold">{unit.description}</p>
-            </div>
+            </motion.div>
 
             <div className="flex flex-col items-center gap-4 relative">
               {/* レッスンを蛇行させて並べる（Duolingoっぽく） */}
@@ -55,8 +61,12 @@ export default function LearnPage() {
                 const marginLeft = [0, 40, 60, 20, -20][index % 5];
                 
                 return (
-                  <div 
-                    key={lesson.id} 
+                  <motion.div 
+                    key={lesson.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
                     className="relative transition-transform active:scale-95"
                     style={{ marginLeft: `${marginLeft}px` }}
                   >
@@ -98,12 +108,16 @@ export default function LearnPage() {
                     
                     {/* レッスン名（吹き出しっぽく） */}
                     {lesson.status === "active" && (
-                      <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-xl shadow-md border-2 border-slate-200 text-xs font-black text-slate-700 whitespace-nowrap animate-in fade-in zoom-in duration-300">
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-xl shadow-md border-2 border-slate-200 text-xs font-black text-slate-700 whitespace-nowrap"
+                      >
                         スタート！
                         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white" />
-                      </div>
+                      </motion.div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -115,21 +129,3 @@ export default function LearnPage() {
     </MobileFrame>
   );
 }
-
-// 足りないアイコンをインポートするための仮
-const Trophy = ({ size, className }: { size: number; className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-  </svg>
-);

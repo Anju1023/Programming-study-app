@@ -14,6 +14,9 @@
   /* Duolingo-like Brand Colors */
   --color-duo-green: #58cc02;
   --color-duo-blue: #1cb0f6;
+  --color-duo-yellow: #ffc800;
+  --color-duo-red: #ff4b4b;
+
   /* Custom Animations */
   @keyframes bounce-slow {
     0%, 100% { transform: translateY(-5%); }

@@ -29,6 +29,11 @@ const loadPyodide = async () => {
 };
 
 const pythonApi = {
+  async init() {
+    await loadPyodide();
+    return true;
+  },
+
   async run(code: string) {
     if (!pyodide) await loadPyodide();
 
