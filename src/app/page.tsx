@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { usePyodide } from "@/hooks/use-pyodide";
 import { Play, Code, Terminal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function Home() {
   const { isReady, runPython } = usePyodide();
@@ -42,20 +44,21 @@ export default function Home() {
           <p className="text-slate-600">ブラウザでPythonを動かしてみよう！</p>
         </header>
 
-        <section className="rounded-3xl border-b-8 border-slate-200 bg-white p-6 shadow-xl">
+        <Card className="border-b-8 p-6 shadow-xl">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-xl font-bold text-slate-700">
               <Terminal size={24} />
               エディタ
             </h2>
-            <button
+            <Button
               onClick={handleRun}
-              disabled={!isReady || isLoading}
-              className="flex items-center gap-2 rounded-2xl border-b-4 border-green-700 bg-duo-green px-6 py-2 font-bold text-white transition-all hover:bg-green-600 active:translate-y-1 active:border-b-0 disabled:bg-slate-300"
+              disabled={!isReady}
+              isLoading={isLoading}
+              variant="primary"
+              leftIcon={<Play size={20} fill="currentColor" />}
             >
-              <Play size={20} fill="currentColor" />
-              {isLoading ? "実行中..." : "実行する"}
-            </button>
+              実行する
+            </Button>
           </div>
 
           <textarea
@@ -64,10 +67,10 @@ export default function Home() {
             className="h-48 w-full rounded-2xl bg-slate-900 p-4 font-mono text-slate-100 focus:outline-none focus:ring-4 focus:ring-duo-green/20"
             spellCheck={false}
           />
-        </section>
+        </Card>
 
         {(output || error) && (
-          <section className="animate-in fade-in slide-in-from-bottom-4 rounded-3xl border-b-8 border-slate-200 bg-white p-6 shadow-xl duration-500">
+          <Card className="animate-in fade-in slide-in-from-bottom-4 border-b-8 p-6 shadow-xl duration-500">
             <h2 className="mb-4 text-xl font-bold text-slate-700">実行結果</h2>
             {error ? (
               <pre className="overflow-x-auto rounded-xl border border-red-200 bg-red-50 p-4 text-duo-red">
@@ -78,7 +81,7 @@ export default function Home() {
                 {output || "（出力なし）"}
               </pre>
             )}
-          </section>
+          </Card>
         )}
 
         {!isReady && (

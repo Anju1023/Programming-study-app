@@ -35,11 +35,11 @@
 - [ ] **Tailwind v4 テーマ設定**
   - カラーパレット定義 (Green, Blue, Yellow, Red)
   - フォント設定 (Noto Sans JP, Monospace)
-- [ ] **共通コンポーネント実装**
+- [x] **共通コンポーネント実装**
   - `Button` (3D style)
   - `Card`
   - `ProgressBar`
-- [ ] **レイアウト実装**
+- [x] **レイアウト実装**
   - モバイル用フレームレイアウト
   - ボトムナビゲーション (`app/(dashboard)/layout.tsx`)
 - [ ] **アニメーション導入**
