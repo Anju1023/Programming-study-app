@@ -8,14 +8,18 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-noto-sans-jp);
   --font-mono: var(--font-geist-mono);
 
   /* Duolingo-like Brand Colors */
   --color-duo-green: #58cc02;
   --color-duo-blue: #1cb0f6;
-  --color-duo-yellow: #ffc800;
-  --color-duo-red: #ff4b4b;
+  /* Custom Animations */
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(-5%); }
+    50% { transform: translateY(0); }
+  }
+  --animate-bounce-slow: bounce-slow 2s infinite ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
