@@ -22,7 +22,7 @@ export const usePyodide = () => {
     workerRef.current = worker;
     apiRef.current = api;
     
-    // Pyodideの初期化を開始
+    // Pyodideの初期化 (アイドル時に実行)
     const initPyodide = async () => {
       try {
         await api.init();
@@ -32,7 +32,17 @@ export const usePyodide = () => {
       }
     };
 
-    initPyodide();
+    if ("requestIdleCallback" in window) {
+      // ブラウザがアイドル状態になったら読み込み開始
+      (window as any).requestIdleCallback(() => {
+        initPyodide();
+      });
+    } else {
+      // フォールバック: 2秒後に読み込み
+      setTimeout(() => {
+        initPyodide();
+      }, 2000);
+    }
 
     return () => {
       worker.terminate();
@@ -43,6 +53,8 @@ export const usePyodide = () => {
     if (!apiRef.current) {
       return { result: null, error: "Python environment is not ready." };
     }
+    // initが終わっていなくてもworker側でloadPyodideが呼ばれるので動作するが、
+    // isReadyの状態と同期させるために確認しておくとより安全
     return await apiRef.current.run(code);
   };
 

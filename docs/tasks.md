@@ -72,9 +72,9 @@
   - [x] `@serwist/next` 導入
   - [x] `app/manifest.ts` 作成
   - [x] オフライン動作確認
-- [ ] **パフォーマンス最適化**
-  - Lazy Loading (Pyodide)
-  - Bundle Size 確認
+- [x] **パフォーマンス最適化**
+  - [x] Lazy Loading (Pyodide)
+  - [x] Bundle Size 確認
 - [ ] **エラーハンドリングと UX 向上**
   - ローディング表示 (Skeletons)
   - エラーバウンダリ設定
