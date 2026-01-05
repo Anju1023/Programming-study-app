@@ -14,16 +14,10 @@
 
 ## Phase 2: Core 機能検証 (Pyodide & Worker) 🐍
 
-- [ ] **Pyodide 環境構築**
-  - `workers/python.worker.ts` 作成
-  - Pyodide のロード処理実装
-- [ ] **React Hook 作成**
-  - `hooks/use-pyodide.ts` 作成 (Worker との通信)
-- [ ] **プロトタイプ画面作成**
-  - テキストエリアに入力した Python コードを実行し、結果を表示する簡易 UI
-- [ ] **動作検証**
-  - 標準出力 (`stdout`) の取得
-  - エラーハンドリング確認
+- [x] **Pyodide 環境構築**
+- [x] **React Hook 作成**
+- [x] **プロトタイプ画面作成**
+- [x] **動作検証**
 
 ## Phase 3: 認証とデータベース 🔐
 
