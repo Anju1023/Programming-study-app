@@ -68,10 +68,10 @@
 - [x] **進捗保存処理**
   - [x] Server Actions で `user_progress` 更新
   - [x] XP, Streak, Hearts の更新ロジック
-- [ ] **PWA 化**
-  - `@serwist/next` 導入
-  - `app/manifest.ts` 作成
-  - オフライン動作確認
+- [x] **PWA 化**
+  - [x] `@serwist/next` 導入
+  - [x] `app/manifest.ts` 作成
+  - [x] オフライン動作確認
 - [ ] **パフォーマンス最適化**
   - Lazy Loading (Pyodide)
   - Bundle Size 確認

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
@@ -15,9 +15,17 @@ const notoSansJP = Noto_Sans_JP({
   preload: false, // Turbopackのビルドエラー回避のための試行
 });
 
+export const viewport: Viewport = {
+  themeColor: "#58cc02",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "Python Study App | 楽しく学べるPython",
   description: "Duolingoライクな体験でPythonを基礎から学ぼう",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
